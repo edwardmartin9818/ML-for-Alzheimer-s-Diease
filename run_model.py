@@ -1,10 +1,10 @@
 from final_model import Ensemble_Model
-import numpy as np
-import sys
-from sklearn.decomposition import PCA
-import csv
-import os
-from os.path import join, isfile
+# import numpy as np
+# import sys
+# from sklearn.decomposition import PCA
+# import csv
+# import os
+# from os.path import join, isfile
 
 #Take numpy data as input and perform PCA on it, keeping n best components
 #Input: Numpy 3d array, int
