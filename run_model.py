@@ -1,4 +1,4 @@
-from final_model import Ensemble_Model
+from model import Ensemble_Model
 from data_handler import DataHandler
 import numpy as np
 import sys

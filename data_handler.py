@@ -70,7 +70,7 @@ class DataHandler:
         # Output(s) - Xs:np.array | Ys:np.array | data_params:dict | train_params:dict
 
 
-        ##################### FETCH DATA/PARAMETERS ############################
+        #-------------------- FETCH DATA/PARAMETERS ----------------------------
         #Loop through each row of from list (from CSV)
         for x in all_params:
             if x[0] == "#X,": #If params are X files
@@ -85,13 +85,13 @@ class DataHandler:
 
             if x[0] == "#T,": #If params are training parameters
                 train_params = self.handle_params(x[1:]) #Call appropriate handler handler
-        ########################################################################
+        #-----------------------------------------------------------------------
 
 
 
 
 
-        ########### ADJUST DATA ACCORDING TO PARAMS FETCHED ###########
+        #---------- ADJUST DATA ACCORDING TO PARAMS FETCHED -----------
         #Look for and properly format Y_class data
         for y in Ys.keys():
             if 'class' in y:
@@ -106,7 +106,7 @@ class DataHandler:
         #Reduce input data to number of timesteps required
         X_final = [self.reduce_timestepsX(X, data_params['n_steps']) for X in list(Xs.values())[:-1]] + [list(Xs.values())[-1]] #Add background data in on the end
         Y_final = [list(Ys.values())[0]] + [self.reduce_timestepsY(Y, data_params['n_steps']) for Y in list(Ys.values())[1:]]
-        ###############################################################
+        #-------------------------------------------------------------
 
         #Return values
         return X_final, Y_final, data_params, train_params

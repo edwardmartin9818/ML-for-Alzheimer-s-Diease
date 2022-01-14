@@ -22,7 +22,7 @@ class Ensemble_Model:
         #------------------------------------------------------------------------
         #Define each LSTM pipeline, loop through each item in input shapes and
         #create pipeline for each data modality
-        pipeline_names = ['npath','npysc','cog','mri','pet'] #Corresponding data modality names
+        # pipeline_names = ['npath','npysc','cog','mri','pet'] #Corresponding data modality names
 
         for i in range(len(input_shapes)-1):
             model = self.lstm_pipeline((steps,input_shapes[i]),pipeline_names[i]) #Create pipeline
@@ -108,7 +108,6 @@ class Ensemble_Model:
         #------------------------------------------------------------------------
         self.save_model_image(self.model, 'Exp1_model.png')
 
-
     def lstm_pipeline(self, input_shape, name):
         #Define input layer
         inputs = k.Input(shape=input_shape,name=name+'_input')
@@ -156,43 +155,31 @@ class Ensemble_Model:
             plot_model(model, show_shapes=True, to_file=filename)
 
     def train_model(self, Xs, Ys, epochs, batch_size):
+        #------- SPLIT DATA INTO TRAIN/TEST -------
+        # Generate random state for data splitting
         rand = round(random.random()*100 + random.random()*10)
-        print('Using random state: ', rand)
+        # print('Using random state: ', rand)
+
+        # Split data into train and test
         split = train_test_split(*(Xs + Ys), test_size=0.25, random_state=rand, shuffle=True)
 
-        lX = len(Xs)
-        lY = len(Ys)
-        print('HERE:',lY)
+        lX = len(Xs) #Get number of X input files
+        lY = len(Ys) #Get number of Y output files
 
-        X_train = [split[n*2] for n in range(lX)]
-        X_test = [split[(n*2)+1] for n in range(lX)]
+        X_train = [split[n*2] for n in range(lX)] #Make X_train as [np.array]
+        X_test = [split[(n*2)+1] for n in range(lX)] #Make X_test as [np.array]
 
-        if lY != 1:
-            y_train = [split[(lX*2)+(n*2)] for n in range(lY)]
-            y_test = [split[(lX*2)+(n*2)+1] for n in range(lY)]
-        else:
-            y_train = split[-2]
-            y_test = split[-1]
+        if lY != 1: #If more than one Y output file
+            y_train = [split[(lX*2)+(n*2)] for n in range(lY)] #Make Y_train as [np.array]
+            y_test = [split[(lX*2)+(n*2)+1] for n in range(lY)] #Make Y_test as [np.array]
+        else: #If only 1 Y output file
+            y_train = split[-2] #Make Y_train as np.array
+            y_test = split[-1] #Make Y_test as np.array
+        #-------------------------------------------
 
-        for x in X_train:
-            print('Train x: ', x.shape)
-        for x in X_test:
-            print('Test x: ', x.shape)
-
-        if lY != 1:
-            for y in y_train:
-                print('Train y: ', y.shape)
-            for y in y_test:
-                print('Test y: ', y.shape)
-        else:
-            print('Train y: ', y_train.shape)
-            print('Test y: ', y_test.shape)
-
-
-        # y_train_conv = (np.argmax(y_train[0], axis=0))
-        # print(y_train_conv)
-
+        #--------------- TRAIN MODEL ---------------
         history = self.model.fit(X_train, y_train, epochs = epochs, batch_size = batch_size, validation_split=0.33)
+        #-------------------------------------------
 
         # y_pred = self.model.predict(X_test)
         #
