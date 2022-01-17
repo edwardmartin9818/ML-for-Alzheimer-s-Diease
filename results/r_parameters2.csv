@@ -1,9 +1,0 @@
-U s e d " " p a r a m s " " f r o m : " " p a r a m e t e r s 2 . c s v
-#X, X_npath2.npy, X_npysc2.npy, X_cog2.npy, X_mri2.npy, X_pet.npy, X_bg.npy,
-#Y, Y_class.npy,
-#P, mri:100, pet:100, n_steps:14,
-#T, epochs:2, batch:32
-loss: 27.452406883239746 3.100310802459717
-accuracy: 0.2853437066078186 0.29182879626750946
-val_loss: 5.225817680358887 1.7389658689498901
-val_accuracy: 0.3057742863893509 0.309711292386055

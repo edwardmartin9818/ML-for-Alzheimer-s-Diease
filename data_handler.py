@@ -43,7 +43,7 @@ class DataHandler:
             shapes.append(X.shape[-1])
 
         #Return values
-        return Xs, Ys, train_params, self.num_data, num_reg_tasks, shapes, data_params['n_steps']
+        return Xs, Ys, train_params, self.num_data, num_reg_tasks, shapes, data_params['n_steps'], all_params
 
 
 

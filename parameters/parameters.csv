@@ -1,4 +1,5 @@
 #X, X_npath2.npy, X_npysc2.npy, X_cog2.npy, X_mri2.npy, X_pet.npy, X_bg.npy,
 #Y, Y_class.npy,
 #P, mri:100, pet:100, n_steps:14,
-#T, epochs:2, batch:32
+#T, epochs:50, batch:32, opt:SGD,
+#Comments, "Test for only one output (class) with all original features"

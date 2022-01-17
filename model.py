@@ -5,14 +5,14 @@ from tensorflow.keras.regularizers import l2
 from tensorflow.keras.utils import plot_model
 from tensorflow.keras.metrics import MeanAbsoluteError, Accuracy
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam, SGD
 from sklearn.metrics import classification_report
 import numpy as np
 import random
 
 
 class Ensemble_Model:
-    def __init__(self, reg_tasks, input_shapes, steps):
+    def __init__(self, reg_tasks, input_shapes, steps, opt_type):
         self.all_inputs = [] #Stores all inputs for final model
         self.lstm_inputs = [] #Stores inputs for LSTM models
         self.lstm_outputs = [] #Stores outputs for LSTM models
@@ -22,7 +22,7 @@ class Ensemble_Model:
         #------------------------------------------------------------------------
         #Define each LSTM pipeline, loop through each item in input shapes and
         #create pipeline for each data modality
-        # pipeline_names = ['npath','npysc','cog','mri','pet'] #Corresponding data modality names
+        pipeline_names = ['npath','npysc','cog','mri','pet'] #Corresponding data modality names
 
         for i in range(len(input_shapes)-1):
             model = self.lstm_pipeline((steps,input_shapes[i]),pipeline_names[i]) #Create pipeline
@@ -102,7 +102,11 @@ class Ensemble_Model:
         loss['output_diagnosis'] = 'categorical_crossentropy'
 
 
-        opt = Adam(learning_rate=0.005)
+        if opt_type == 'SGD':
+            opt = SGD(learning_rate=0.01)
+        if opt_type == 'ADAM':
+            opt = Adam(learning_rate=0.005)
+
 
         self.model.compile(loss=loss, optimizer=opt, metrics=metrics)
         #------------------------------------------------------------------------
