@@ -11,19 +11,6 @@ from os.path import join, isfile
 # This file contains the DataHandler class.
 #
 # DataHandler.fetch_data(filename)    #OVERVIEW
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
 ################################################################################
 
 
@@ -93,15 +80,19 @@ class DataHandler:
 
         #---------- ADJUST DATA ACCORDING TO PARAMS FETCHED -----------
         #Look for and properly format Y_class data
-        for y in Ys.keys():
-            if 'class' in y:
-                Ys[y] = Ys[y].reshape((self.num_data, 4))
+        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TO DELETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # for y in Ys.keys():
+        #     if 'class' in y:
+        #         Ys[y] = Ys[y].reshape((self.num_data, 4))
+        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TO DELETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         #Perform PCA on data specified in #P
-        for p in data_params.keys():
-            for key in Xs.keys():
-                if p in key:
-                    Xs[key] = self.perform_pca(Xs[key], data_params[p]) #Perform PCA
+        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DON'T DO PCA FOR NOW !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # for p in data_params.keys():
+        #     for key in Xs.keys():
+        #         if p in key:
+        #             Xs[key] = self.perform_pca(Xs[key], data_params[p]) #Perform PCA
+        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DON'T DO PCA FOR NOW !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         #Reduce input data to number of timesteps required
         X_final = [self.reduce_timestepsX(X, data_params['n_steps']) for X in list(Xs.values())[:-1]] + [list(Xs.values())[-1]] #Add background data in on the end
@@ -146,9 +137,12 @@ class DataHandler:
         # Take numpy data as input and perform PCA on it, keeping n best components
         # Input(s) - data:np.array | n_comp:int
         # Output(s) - transformed_data:np.array
+
+
         pca = PCA(n_components=n_comp)
         n_steps = data.shape[1]
         reshaped_data = data.reshape((self.num_data*n_steps,data.shape[-1]))
+
         pca.fit(reshaped_data)
 
         transformed_data = np.empty([self.num_data,n_steps,n_comp])
